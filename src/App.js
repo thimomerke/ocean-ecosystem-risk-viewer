@@ -15,6 +15,7 @@ function App() {
   const featureLayerRef1 = useRef();
   const featureLayerRef2 = useRef();
   const featureLayerRef3 = useRef();
+  const featureLayerRef4 = useRef(); // Greay Seals
 
   let moveTimeout;
   const handleMoveEnd = () => {
@@ -37,17 +38,14 @@ function App() {
     }, 300); // 300ms delay before sending the request
   };
 
-  const [optionState, setOptionState] = React.useState(states[0]);
-
-  function handleStateSelection(selectedState) {
-    setOptionState(selectedState);
-    handleMapFly([selectedState.latitude, selectedState.longitude]);
+  function handleLocationSelection(lat, lon) {
+    handleMapFly([lat, lon]);
   }
 
   function handleMapFly(coordinates) {
     const map = mapRef.current;
     if (map) {
-      map.flyTo(coordinates, 6.5, {
+      map.flyTo(coordinates, 8, {
         duration: 2,
       });
     }
@@ -79,7 +77,7 @@ function App() {
           style={{ color: 'blue', weight: 1 }}
           where="1=1"
           onEachFeature={(feature, layer) => {
-            layer.bindPopup(`<b>Coral Reef ID:</b> ${feature.properties.name}`);
+            layer.bindPopup(`<b>Coral Reef</b><br><b>Coral Reef Name:</b> ${feature.properties.name}<br><b>Species:</b> ${feature.properties.species}`);
           }}
         />
 
@@ -89,21 +87,71 @@ function App() {
           style={{ color: 'red', weight: 1 }}
           where="1=1"
           onEachFeature={(feature, layer) => {
-            layer.bindPopup(`<b>Coral Reef ID:</b> ${feature.properties.name}`);
+            layer.bindPopup(`<b>Cold Water Corals</b><br><b>Coral Reef Name:</b>  ${feature.properties.name}<br><b>Species:</b> ${feature.properties.species}`);
           }}
         />
 
         <FeatureLayer
           ref={featureLayerRef3}
-          url="https://data-gis.unep-wcmc.org/server/rest/services/HabitatsAndBiotopes/Global_Distribution_of_Seagrasses/FeatureServer"
+          url="https://data-gis.unep-wcmc.org/server/rest/services/HabitatsAndBiotopes/Global_Distribution_of_Seagrasses/FeatureServer/1"
           style={{ color: 'green', weight: 1 }}
           where="1=1"
           onEachFeature={(feature, layer) => {
-            layer.bindPopup(`<b>Coral Reef ID:</b> ${feature.properties.name}`);
+            layer.bindPopup(`<b>Seagrass</b><br><b>Species:</b> ${feature.properties.scientific}`);
           }}
         />
+
+        <FeatureLayer
+          ref={featureLayerRef4}
+          url="https://data-gis.unep-wcmc.org/server/rest/services/Hosted/Kaschner_003_GreySeal2013/FeatureServer/0"
+          pointToLayer={(feature, latlng) => {
+            return L.circleMarker(latlng, {
+              radius: 4.5,
+              fillColor: 'orange',
+              color: '#000',
+              weight: 1,
+              opacity: 1,
+              fillOpacity: 0.5,
+            });
+          }}
+          where="1=1"
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(
+              `<b>Grey Seal Population</b><br><b>Species:</b> ${feature.properties.species}`
+            );
+          }}
+        /> 
+
+<FeatureLayer
+  ref={featureLayerRef4}
+  url="https://data-gis.unep-wcmc.org/server/rest/services/ProtectedSites/The_World_Database_of_Protected_Areas/FeatureServer/0"
+  pointToLayer={(feature, latlng) => {
+    // Check if the property "marine" equals "Marine" (2)
+    if (feature.properties.marine === "2") {
+      return L.circleMarker(latlng, {
+        radius: 4.5,
+        fillColor: 'black',
+        color: '#000',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.5,
+      });
+    }
+    // Return an empty layer for non-matching features
+    return L.layerGroup(); // This returns an empty layer safely
+  }}
+  onEachFeature={(feature, layer) => {
+    // Only bind popup if the layer is a circle marker (i.e., when the condition is met)
+    if (feature.properties && feature.properties.marine === "2") {
+      layer.bindPopup(
+        `<b>Marine Protected Area</b><br><b>Name:</b> ${feature.properties.desig}`
+      );
+    }
+  }}
+/>
+
       </MapContainer>
-      <Sidebar callback={handleStateSelection}></Sidebar>
+      <Sidebar callback={handleLocationSelection}></Sidebar>
     </div>
   );
 }
