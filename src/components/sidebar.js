@@ -7,42 +7,75 @@ export default function Sidebar(props) {
   const lonInput = React.useRef();
   const latInput = React.useRef();
 
-  //fetch coordinates for new city/adress
+  // Fetch coordinates for a new city/address
   const fetchCoordinates = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    var locName = locInput.current.value
-    //alert(cityName)
+    const locName = locInput.current.value;
     fetch(`https://nominatim.openstreetmap.org/search?q=${locName}&format=json`, { method: 'GET' })
-      .then(response => {
-        return response.json()
-      })
+      .then(response => response.json())
       .then(data => {
-        props.callback(data[0].lat, data[0].lon);
-      })
-  }
+        if (data.length > 0) {
+          props.flyToCallback(data[0].lat, data[0].lon);
+        } else {
+          alert("Location not found.");
+        }
+      });
+  };
 
   const flyToCoordinates = (e) => {
-    e.preventDefault()
-
-    props.callback(latInput.current.value, lonInput.current.value);
-  }
+    e.preventDefault();
+    props.flyToCallback(latInput.current.value, lonInput.current.value);
+  };
 
   return (
     <div className="sidebar">
-  Enter location by name
+      <h3>Location Search</h3>
+      
+      <p>Enter location by name:</p>
       <form className="find-location-form" onSubmit={fetchCoordinates}>
-      <input ref={locInput} id="name" name="name" type="text" placeholder="e.g. Berlin" class="form-control input-md" required=""/>
-      <button type="submit">Submit</button>
+        <input
+          ref={locInput}
+          type="text"
+          placeholder="e.g. Berlin"
+          className="form-control input-md"
+          required
+        />
+        <button type="submit">Submit</button>
       </form>
 
-      Or by precise coordinates
+      <p>Or by precise coordinates:</p>
       <form className="find-location-form" onSubmit={flyToCoordinates}>
-      <input ref={lonInput} id="name" name="name" type="text" placeholder="Longitude" class="form-control input-md" required=""/>
-      <input ref={latInput} id="name" name="name" type="text" placeholder="Latitude" class="form-control input-md" required=""/>
-      <button type="submit">Submit</button>
+        <input
+          ref={latInput}
+          type="text"
+          placeholder="Latitude"
+          className="form-control input-md"
+          required
+        />
+        <input
+          ref={lonInput}
+          type="text"
+          placeholder="Longitude"
+          className="form-control input-md"
+          required
+        />
+        <button type="submit">Submit</button>
       </form>
 
+      <h3>Toggle Layers</h3>
+      {Object.keys(props.layerStates).map((layerKey) => (
+        <div key={layerKey}>
+          <label>
+            <input
+              type="checkbox"
+              checked={props.layerStates[layerKey]}
+              onChange={() => props.toggleLayer(layerKey)}
+            />
+            {layerKey}
+          </label>
+        </div>
+      ))}
     </div>
   );
 }
