@@ -1,9 +1,23 @@
 /* CSS File */
 
+@font-face {
+  font-family: "CBS NEW REGULAR";   /*Can be any text*/
+  src: local("CBS NEW REGULAR"),
+    url("./fonts/CBS-NEW-REGULAR.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "CBS Sans";   /*Can be any text*/
+  src: local("CBS Sans"),
+    url("./fonts/CBSSans-Regular.ttf") format("truetype");
+}
+
 .App {
   display: flex;
   flex-direction: row;
   height: 100vh;
+  font-family: 'CBS Sans';
+  font-style: regular;
 }
 
 .map-container {
@@ -18,25 +32,94 @@
 }
 
 .sidebar {
-  width: 30vw;
-  height: 100vh;
+  width: 25vw;
   padding: 2em;
   overflow-y: auto;
+  background-color: #ffffff;
 }
 
-/* Additional styling for sidebar content if needed */
-.sidebar h2,
+.sidebar h3,
 .sidebar p,
 .sidebar ul {
   text-align: left;
 }
 
 .sidebar h2 {
-  margin-top: 0;
+  margin: 0;
+  margin-bottom: 20px;
+  font-family: 'CBS NEW REGULAR';
+  font-style: regular;
+  font-size: 45px;
+}
+
+.sidebar h3 {
+  margin: 0;
+  margin-bottom: 20px;
+  font-family: 'CBS NEW REGULAR';
+  font-style: regular;
+  font-size: 30px;
+}
+
+.sidebar div {
+  margin-bottom: 8px
+}
+
+.sidebar #layers label {
+  display: flex;
+  align-items: center;
+  gap: 8px
+}
+
+.sidebar .find-location-form input[type=text] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: vertical;
+  margin-bottom: 5px;
+}
+
+.sidebar #layers input[type=checkbox] {
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: #5E2F3A;
 }
 
 .sidebar button {
+  background-color: #5B66A4;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
   width: 100%;
   font-weight: bold;
   padding: 0.8em 1em;
+  margin-bottom: 20px;
+}
+
+.sidebar #latBut {
+  width: 49%;
+  margin-right: 2%;
+}
+.sidebar #lonBut {
+  width: 49%;
+}
+
+#layers{
+  margin-top: 70px;
+}
+
+.sidebar button:hover {
+  background-color: #7D91CF;
+}
+
+#cbs-logo {
+  position:fixed;
+  bottom:25px;
+  width: 20vw;
+  max-width: 250px;
+  background-color: #ffffff;
 }
