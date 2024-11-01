@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export default function Sidebar(props) {
+export default function Sidebar({ layerStates, toggleLayer, flyToCallback }) {
   const locInput = React.useRef();
   const lonInput = React.useRef();
   const latInput = React.useRef();
@@ -16,7 +16,7 @@ export default function Sidebar(props) {
       .then(response => response.json())
       .then(data => {
         if (data.length > 0) {
-          props.flyToCallback(data[0].lat, data[0].lon);
+          flyToCallback(data[0].lat, data[0].lon);
         } else {
           alert("Location not found.");
         }
@@ -25,11 +25,13 @@ export default function Sidebar(props) {
 
   const flyToCoordinates = (e) => {
     e.preventDefault();
-    props.flyToCallback(latInput.current.value, lonInput.current.value);
+    flyToCallback(latInput.current.value, lonInput.current.value);
   };
 
   return (
     <div className="sidebar">
+      <h2>Marine Ecosystem Viewer</h2>
+
       <h3>Location Search</h3>
       
       <p>Enter location by name:</p>
@@ -47,6 +49,7 @@ export default function Sidebar(props) {
       <p>Or by precise coordinates:</p>
       <form className="find-location-form" onSubmit={flyToCoordinates}>
         <input
+          id="latBut"
           ref={latInput}
           type="text"
           placeholder="Latitude"
@@ -54,6 +57,7 @@ export default function Sidebar(props) {
           required
         />
         <input
+          id="lonBut"
           ref={lonInput}
           type="text"
           placeholder="Longitude"
@@ -63,19 +67,25 @@ export default function Sidebar(props) {
         <button type="submit">Submit</button>
       </form>
 
+      <div id="layers">
       <h3>Toggle Layers</h3>
-      {Object.keys(props.layerStates).map((layerKey) => (
-        <div key={layerKey}>
-          <label>
-            <input
-              type="checkbox"
-              checked={props.layerStates[layerKey]}
-              onChange={() => props.toggleLayer(layerKey)}
-            />
-            {layerKey}
-          </label>
-        </div>
-      ))}
+      {Object.keys(layerStates).map((layerKey) => (
+  <div key={layerKey}> {/* Optional spacing between items */}
+    <label> {/* Center items vertically and add spacing */}
+      <input
+        type="checkbox"
+        checked={layerStates[layerKey].visible}
+        onChange={() => toggleLayer(layerKey)}
+      />
+      <span>{layerStates[layerKey].label}</span>
+      <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <circle cx="8" cy="8" r="6" stroke="#333" strokeWidth="0" fill={layerStates[layerKey].color} />
+      </svg>
+    </label>
+  </div>
+))}
+    </div>
+    <img id="cbs-logo" src="https://design.cbs.dk/wp-content/uploads/CBSlogo_extended_rgb_blue.svg" alt="CBS Logo"></img>
     </div>
   );
 }
