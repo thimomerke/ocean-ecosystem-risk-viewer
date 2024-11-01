@@ -51,11 +51,11 @@ function App() {
 
     // State for layer visibility
     const [layerStates, setLayerStates] = useState({
-      Shipping: {active: false, label: 'Shipping and Infrastructure', color: 'white'},
+      Shipping: {active: false, label: 'Shipping and Infrastructure', color: 'transparent'},
       CoralReefs: {active: false, label: 'Coral Reefs', color: 'blue'},
       Seagrass: {active: false, label: 'Seagrass', color: 'green'},
       GraySeals: {active: false, label: 'Gray Seals', color: 'grey'},
-      ProtectedSites: {active: false, label: 'Marine Protected Areas', color: 'red'},
+      ProtectedSites: {active: false, label: 'Protected / Managed Areas', color: 'red'},
       MigratoryZones: {active: false, label: 'Bird Migration Zones', color: 'yellow'},
       Seamounts: {active: false, label: 'Underwater Seamounts', color: 'black'},
       Whales: {active: false, label: 'Whales', color: 'pink'},
@@ -162,6 +162,7 @@ function App() {
         )}
 
 {layerStates.ProtectedSites.active && (
+  <div>
 <FeatureLayer
   ref={featureLayerRef5}
   url="https://data-gis.unep-wcmc.org/server/rest/services/ProtectedSites/The_World_Database_of_Protected_Areas/FeatureServer/0"
@@ -189,6 +190,16 @@ function App() {
     }
   }}
 />
+<FeatureLayer
+          ref={featureLayerRef6}
+          url="https://services9.arcgis.com/lm7wE8a9YA9rKfzy/arcgis/rest/services/ProtectedSeas_Marine_Managed_Areas_View/FeatureServer/0"
+          style={{ color: 'red', weight: 0.5 }}
+          where="1=1"
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(`<b>Marine Managed Area</b><br><b>Name:</b>  ${feature.properties.site_name}<br><b>Protection Focus:</b>  ${feature.properties.protection_focus}<br><b>Purpose:</b> ${feature.properties.purpose}<br><b>Restrictions:</b> ${feature.properties.restrictions}`);
+          }}
+        />
+        </div>
 )}
 
 {layerStates.MigratoryZones.active && (

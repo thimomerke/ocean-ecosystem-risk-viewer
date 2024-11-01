@@ -78,14 +78,19 @@ export default function Sidebar({ layerStates, toggleLayer, flyToCallback }) {
         onChange={() => toggleLayer(layerKey)}
       />
       <span>{layerStates[layerKey].label}</span>
+      {layerStates[layerKey].color != "transparent" && (
       <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <circle cx="8" cy="8" r="6" stroke="#333" strokeWidth="0" fill={layerStates[layerKey].color} />
+        <circle cx="8" cy="8" r="6" stroke="#000000" strokeWidth="1" fill={layerStates[layerKey].color} />
       </svg>
+      )}
     </label>
   </div>
 ))}
     </div>
+    <div id="footer">
     <img id="cbs-logo" src="https://design.cbs.dk/wp-content/uploads/CBSlogo_extended_rgb_blue.svg" alt="CBS Logo"></img>
+    &copy;2024 Copenhagen Business School / Nordic ESG Lab
+    </div>
     </div>
   );
 }
