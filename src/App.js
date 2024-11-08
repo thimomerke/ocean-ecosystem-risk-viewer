@@ -27,6 +27,7 @@ function App() {
   const featureLayerRef9 = useRef(); // Whales
   const featureLayerRef10 = useRef(); // Whales
   const featureLayerRef11 = useRef(); // Whales
+  const featureLayerRef12 = useRef(); // Fishery Restrictions / Species
 
   let moveTimeout;
   const handleMoveEnd = () => {
@@ -52,10 +53,10 @@ function App() {
     // State for layer visibility
     const [layerStates, setLayerStates] = useState({
       Shipping: {active: false, label: 'Shipping and Infrastructure', color: 'transparent'},
+      FisheryRest: {active: false, label: 'Fishery Restrictions / Protected Areas', color: 'transparent'},
       CoralReefs: {active: false, label: 'Coral Reefs', color: 'blue'},
       Seagrass: {active: false, label: 'Seagrass', color: 'green'},
       GraySeals: {active: false, label: 'Gray Seals', color: 'grey'},
-      ProtectedSites: {active: false, label: 'Protected / Managed Areas', color: 'red'},
       MigratoryZones: {active: false, label: 'Bird Migration Zones', color: 'yellow'},
       Seamounts: {active: false, label: 'Underwater Seamounts', color: 'black'},
       Whales: {active: false, label: 'Whales', color: 'pink'},
@@ -160,47 +161,6 @@ function App() {
           }}
         /> 
         )}
-
-{layerStates.ProtectedSites.active && (
-  <div>
-<FeatureLayer
-  ref={featureLayerRef5}
-  url="https://data-gis.unep-wcmc.org/server/rest/services/ProtectedSites/The_World_Database_of_Protected_Areas/FeatureServer/0"
-  pointToLayer={(feature, latlng) => {
-    // Check if the property "marine" equals "Marine" (2)
-    if (feature.properties.marine === "2") {
-      return L.circleMarker(latlng, {
-        radius: 8,
-        fillColor: 'red',
-        color: 'red',
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 1,
-      });
-    }
-    // Return an empty layer for non-matching features
-    return L.layerGroup(); // This returns an empty layer safely
-  }}
-  onEachFeature={(feature, layer) => {
-    // Only bind popup if the layer is a circle marker (i.e., when the condition is met)
-    if (feature.properties && feature.properties.marine === "2") {
-      layer.bindPopup(
-        `<b>Marine Protected Area</b><br><b>Name:</b> ${feature.properties.desig}`
-      );
-    }
-  }}
-/>
-<FeatureLayer
-          ref={featureLayerRef6}
-          url="https://services9.arcgis.com/lm7wE8a9YA9rKfzy/arcgis/rest/services/ProtectedSeas_Marine_Managed_Areas_View/FeatureServer/0"
-          style={{ color: 'red', weight: 0.5 }}
-          where="1=1"
-          onEachFeature={(feature, layer) => {
-            layer.bindPopup(`<b>Marine Managed Area</b><br><b>Name:</b>  ${feature.properties.site_name}<br><b>Protection Focus:</b>  ${feature.properties.protection_focus}<br><b>Purpose:</b> ${feature.properties.purpose}<br><b>Restrictions:</b> ${feature.properties.restrictions}`);
-          }}
-        />
-        </div>
-)}
 
 {layerStates.MigratoryZones.active && (
 <FeatureLayer
@@ -308,6 +268,48 @@ function App() {
           }}
         />
         )}
+
+{layerStates.FisheryRest.active && (
+  <div>
+<FeatureLayer
+          ref={featureLayerRef12}
+          url="https://services9.arcgis.com/lm7wE8a9YA9rKfzy/ArcGIS/rest/services/ProtectedSeas_Level_of_Fishing_Protection_2/FeatureServer/0"
+          style={{ color: 'yellow', weight: 1 }}
+          where="1=1"
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(`<b>Fishery Restrictions:</b> Less restrictive: Few species- or gear-specific restrictions apply.<br><b>Construction:</b>  ${feature.properties.construction}<br><b>Drilling:</b>  ${feature.properties.drilling}<br><b>Restrictions:</b>  ${feature.properties.restrictions}`);
+          }}
+        />
+        <FeatureLayer
+          ref={featureLayerRef12}
+          url="https://services9.arcgis.com/lm7wE8a9YA9rKfzy/ArcGIS/rest/services/ProtectedSeas_Level_of_Fishing_Protection_3/FeatureServer/0"
+          style={{ color: 'orange', weight: 1 }}
+          where="1=1"
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(`<b>Fishery Restrictions:</b> Moderately restrictive: Several species- or gear-specific restrictions apply; or either commercial fishing or recreational fishing is entirely prohibited<br><b>Construction:</b>  ${feature.properties.construction}<br><b>Drilling:</b>  ${feature.properties.drilling}<br><b>Restrictions:</b>  ${feature.properties.restrictions}`);
+          }}
+        />
+        <FeatureLayer
+          ref={featureLayerRef12}
+          url="https://services9.arcgis.com/lm7wE8a9YA9rKfzy/ArcGIS/rest/services/ProtectedSeas_Level_of_Fishing_Protection_4/FeatureServer/0"
+          style={{ color: 'red', weight: 1 }}
+          where="1=1"
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(`<b>Fishery Restrictions:</b> Heavily restrictive: Fishing is mostly prohibited, with few exceptions.<br><b>Construction:</b>  ${feature.properties.construction}<br><b>Drilling:</b>  ${feature.properties.drilling}<br><b>Restrictions:</b>  ${feature.properties.restrictions}`);
+          }}
+        />
+        <FeatureLayer
+          ref={featureLayerRef12}
+          url="https://services9.arcgis.com/lm7wE8a9YA9rKfzy/ArcGIS/rest/services/ProtectedSeas_Level_of_Fishing_Protection_5/FeatureServer/0"
+          style={{ color: 'red', weight: 1 }}
+          where="1=1"
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(`<b>Fishery Restrictions:</b> Most restrictive: Fishing is prohibited.<br><b>Construction:</b>  ${feature.properties.construction}<br><b>Drilling:</b>  ${feature.properties.drilling}<br><b>Restrictions:</b>  ${feature.properties.restrictions}`);
+          }}
+        />
+
+    </div>
+      )}
 
       </MapContainer>
       <Sidebar
