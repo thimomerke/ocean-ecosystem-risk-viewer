@@ -66,6 +66,12 @@
   margin-bottom: 8px
 }
 
+.sidebar #layers {
+  overflow-y: auto;
+  height: 35%;
+  width: 100%;
+}
+
 .sidebar #layers label {
   display: flex;
   align-items: center;
@@ -121,7 +127,7 @@
 #footer {
   position:fixed;
   bottom:25px;
-  width: 20vw;
+  width: 100%;
   max-width: 250px;
   min-width: 220px;
   background-color: #ffffff;

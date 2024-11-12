@@ -20,7 +20,7 @@ function App() {
   const featureLayerRef2 = useRef(); // Cold Water Corals
   const featureLayerRef3 = useRef(); // Seagrass
   const featureLayerRef4 = useRef(); // Gray Seals
-  const featureLayerRef5 = useRef(); // Protected Sites
+  const featureLayerRef5 = useRef(); // MPAs
   const featureLayerRef6 = useRef(); // Migratory Zones
   const featureLayerRef7 = useRef(); // Seamounts
   const featureLayerRef8 = useRef(); // Whales
@@ -54,6 +54,7 @@ function App() {
     const [layerStates, setLayerStates] = useState({
       Shipping: {active: false, label: 'Shipping and Infrastructure', color: 'transparent'},
       FisheryRest: {active: false, label: 'Fishery Restrictions / Protected Areas', color: 'transparent'},
+      MPA: {active: false, label: 'Marine Protected Areas', color: 'transparent'},
       CoralReefs: {active: false, label: 'Coral Reefs', color: 'blue'},
       Seagrass: {active: false, label: 'Seagrass', color: 'green'},
       GraySeals: {active: false, label: 'Gray Seals', color: 'grey'},
@@ -307,7 +308,20 @@ function App() {
             layer.bindPopup(`<b>Fishery Restrictions:</b> Most restrictive: Fishing is prohibited.<br><b>Construction:</b>  ${feature.properties.construction}<br><b>Drilling:</b>  ${feature.properties.drilling}<br><b>Restrictions:</b>  ${feature.properties.restrictions}`);
           }}
         />
+    </div>
+      )}
 
+{layerStates.MPA.active && (
+  <div>
+          <FeatureLayer
+          ref={featureLayerRef5}
+          url="https://services5.arcgis.com/Mj0hjvkNtV7NRhA7/arcgis/rest/services/WDPA_v4/FeatureServer/1"
+          style={{ color: 'red', weight: 1 }}
+          where="MARINE=2"
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(`<b>Marine Protected Areas:</b> <br><b>Name:</b>  ${feature.properties.name}<br><b>Authority:</b>  ${feature.properties.mang_auth}`);
+          }}
+        />
     </div>
       )}
 
