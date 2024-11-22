@@ -125,10 +125,14 @@
 }
 
 #footer {
-  position:fixed;
-  bottom:25px;
+  margin-top: 15px;
   width: 100%;
   max-width: 250px;
   min-width: 220px;
   background-color: #ffffff;
+}
+
+#footer img {
+  width: 70%;
+  height: auto;
 }
