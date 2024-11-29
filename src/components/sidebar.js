@@ -89,7 +89,7 @@ export default function Sidebar({ layerStates, toggleLayer, flyToCallback }) {
     </div>
     <div id="footer">
     <img id="cbs-logo" src="https://design.cbs.dk/wp-content/uploads/CBSlogo_extended_rgb_blue.svg" alt="CBS Logo"></img>
-    <br></br>&copy;2024 Copenhagen Business School / Nordic ESG Lab, v1.2
+    <br></br>&copy;2024 Copenhagen Business School / Nordic ESG Lab, v1.2.1
     </div>
     </div>
   );

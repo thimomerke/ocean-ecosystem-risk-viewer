@@ -19,7 +19,7 @@ function App() {
   const featureLayerRef1 = useRef(); // Coral Reefs
   const featureLayerRef2 = useRef(); // Cold Water Corals
   const featureLayerRef3 = useRef(); // Seagrass
-  const featureLayerRef4 = useRef(); // Gray Seals
+  const featureLayerRef4 = useRef(); // Grey Seals
   const featureLayerRef5 = useRef(); // MPAs
   const featureLayerRef6 = useRef(); // Migratory Zones
   const featureLayerRef7 = useRef(); // Seamounts
@@ -57,7 +57,7 @@ function App() {
       MPA: {active: false, label: 'Marine Protected Areas', color: 'transparent'},
       CoralReefs: {active: false, label: 'Coral Reefs', color: 'blue'},
       Seagrass: {active: false, label: 'Seagrass', color: 'green'},
-      GraySeals: {active: false, label: 'Gray Seals', color: 'grey'},
+      GreySeals: {active: false, label: 'Grey Seals', color: 'grey'},
       MigratoryZones: {active: false, label: 'Bird Migration Zones', color: 'yellow'},
       Seamounts: {active: false, label: 'Underwater Seamounts', color: 'black'},
       Whales: {active: false, label: 'Whales', color: 'pink'},
@@ -140,7 +140,7 @@ function App() {
           }}
         />
 )}
-{layerStates.GraySeals.active && (
+{layerStates.GreySeals.active && (
         <FeatureLayer
           ref={featureLayerRef4}
           url="https://data-gis.unep-wcmc.org/server/rest/services/Hosted/Kaschner_003_GreySeal2013/FeatureServer/0"
